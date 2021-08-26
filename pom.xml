@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.example</groupId>
+	<artifactId>jparepo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>jparepo</name>
+	<description>Repro for issue</description>
+
+	<properties>
+	    <compiler-plugin.version>3.8.1</compiler-plugin.version>
+	    <maven.compiler.parameters>true</maven.compiler.parameters>
+	    <maven.compiler.source>11</maven.compiler.source>
+	    <maven.compiler.target>11</maven.compiler.target>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	    <quarkus-plugin.version>2.1.2.Final</quarkus-plugin.version>
+	    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+	    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+	    <quarkus.platform.version>2.1.2.Final</quarkus.platform.version>
+	    <datasource_url>jdbc:postgresql://localhost:5432</datasource_url>
+	    <datasource_username>postgres</datasource_username>
+	    <datasource_password>postgres</datasource_password>
+	    <commons-collections4.version>4.4</commons-collections4.version>
+	</properties>
+    <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>${quarkus.platform.group-id}</groupId>
+            <artifactId>${quarkus.platform.artifact-id}</artifactId>
+            <version>${quarkus.platform.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-arc</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-resteasy-jackson</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-resteasy-mutiny</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-kubernetes</artifactId>
+        </dependency>
+
+        <!-- Support for liveness/readiness -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
+
+        <!-- Support for YAML configuration -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-config-yaml</artifactId>
+        </dependency>
+
+        <!-- Support for building docker images based on JIB -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-container-image-jib</artifactId>
+        </dependency>
+
+        <!-- Support for bean validation -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-validator</artifactId>
+        </dependency>
+
+        <!-- Hibernate ORM specific dependencies -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-hibernate-orm</artifactId>
+        </dependency>
+		
+        <!-- JDBC driver dependencies -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-jdbc-h2</artifactId>
+        </dependency>
+      <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-jdbc-postgresql</artifactId>
+      </dependency>
+		
+        <!-- Spring Data JPA Support -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-spring-data-jpa</artifactId>
+        </dependency>
+		
+        <!-- Security -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-security</artifactId>
+        </dependency>
+		
+        <!-- Fault tolerance -->
+        <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+        </dependency>
+
+        <!-- Apache commons libraries -->
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-collections4</artifactId>
+          <version>${commons-collections4.version}</version>
+        </dependency>
+
+
+        <dependency>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+		<plugins>
+			<plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus-plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                          <goal>build</goal>
+                          <goal>generate-code</goal>
+                          <goal>generate-code-tests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+		<profile>
+            <id>native</id>
+			<activation>
+                <property>
+                  <name>native</name>
+                </property>
+			</activation>
+			<build>
+				<plugins>
+                </plugins>
+			</build>
+            <properties>
+               <quarkus.package.type>native</quarkus.package.type>
+            </properties>
+		</profile>
+	</profiles>
+</project>

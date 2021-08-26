@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: jparepo
+  labels:
+    app.kubernetes.io/name: jparepo
+    app.kubernetes.io/version: 0.0.1-SNAPSHOT
+    app.kubernetes.io/component: microservice
+data:
+  postgres_username: CHANGE_THIS
+  postgres_password: CHANGE_THIS
+  postgres_host: CHANGE_THIS
+  postgres_port: 5432

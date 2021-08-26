@@ -1,0 +1,43 @@
+quarkus:
+  application:
+    name: jparepo
+  container-image:
+    registry: eu.gcr.io
+    group: erewhon
+    name: jparepo
+  datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:${quarkus.application.name}
+  hibernate-orm:
+    database:
+      generation: create
+  http:
+    port: 8095
+  kubernetes:
+    name: ${quarkus.application.name}
+    labels:
+      "app.kubernetes.io/component": microservice
+      "app.kubernetes.io/name": ${quarkus.application.name}
+    ports:
+      web:
+        host-port: 80
+        protocol: TCP
+        container-port: 8095
+    liveness-probe:
+      period: 3s
+      timeout: 1s
+    readiness-probe:
+      period: 3s
+      timeout: 1s
+    resources:
+      requests:
+        memory: 10Mi
+        cpu: 10m
+      limits:
+        memory: 20Mi
+        cpu: 20m
+
+# Settings for dev profile (when running mvn quarkus:dev)
+"%dev":
+  quarkus:
